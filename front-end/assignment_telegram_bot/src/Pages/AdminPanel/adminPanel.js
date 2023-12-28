@@ -7,7 +7,7 @@ export default function AdminPanel() {
   const [users, setUsers] = useState([]);
   const [api, setApi] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Set initial state as logged in
-
+  const objectId= "658c1ac43b9561d7d764dddb";
 
   useEffect(() => {
     fetchUsers();
@@ -43,13 +43,14 @@ export default function AdminPanel() {
     });
   };
   const handleSubmit = (e) => {
+    e.preventDefault()
     const newChat ={
         api: api,
     };
-    const objectId= "658c1ac43b9561d7d764dddb";
     axios.put(`http://localhost:5000/api/updateApi/${objectId}`,newChat)
     .then((response) => {
         console.log('User registered',response.data)
+        console.log("Hi",newChat.api)
     })
     .catch((error)=>{
         console.error('Error registered user:', error)
@@ -83,10 +84,13 @@ const destroyCookie = () => {
       <div className='apiReplace'>
       <form onSubmit={handleSubmit}>
         <div className='txt_field'>
-        <label htmlFor="fname">Replace Bot Api</label>
-             <input type="text" className="input_form" id="fname" name="fname" 
+             <input type="text" name="fname" 
              value={api}
-             onChange={(e)=> setApi(e.target.value)}/>
+             onChange={(e)=> setApi(e.target.value)}
+             required
+             />
+            <span></span>
+          <label>Change it with your own API keys</label>
         </div>
              <input type="submit" className="btn btn-light" value="Send"/>
         </form>

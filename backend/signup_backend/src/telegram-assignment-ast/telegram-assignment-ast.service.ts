@@ -4,7 +4,6 @@ import * as mongoose from 'mongoose';
 import { User } from 'src/book/schema/subscribe.schema';
 import { Api } from 'src/book/schema/api.schema';
 import { Cron } from '@nestjs/schedule';
-import { measureMemory } from 'vm';
 const TelegramBot = require('node-telegram-bot-api');
 
 
@@ -20,16 +19,16 @@ const fetchetails = async (place: string, UserId: string, apiId: string, sendMes
     let url=`https://api.openweathermap.org/data/2.5/weather?q=${place}&units=metric&appid=${apiValue}`;
     const res= await fetch(url);
     const data= await res.json();
-    console.log(data);
+    // console.log(data);
     const userId = await UserId;
     const message = await data.message;
     if(message != 'city not found'){
         const { main } = data; // Destructuring the 'main' object from the 'data'
             const { temp, humidity, pressure } = main; // Destructuring specific properties from 'main'
-            console.log(temp);
-            console.log(humidity);
-            console.log(pressure);
-            console.log(userId);
+            // console.log(temp);
+            // console.log(humidity);
+            // console.log(pressure);
+            // console.log(userId);
             // Additional data destructuring if needed
             const { main: weathermood } = data.weather[0];
             const { name } = data;
@@ -64,31 +63,37 @@ export class TelegramAssignmentAstService {
     ){
         this.bot = new TelegramBot(Tele_Token, {polling: true})
         this.bot.on("message",this.onRecieveMessage)
-        this.scheduleDailyWeatherUpdates(); // Initialize the scheduler when the service is constructed
+        this.initializeScheduler(); // Start the scheduler when the service is constructed
     }
 
-    @Cron('0 12 * * *') // Run at 12:00 AM every day
-    @Cron('15 24 * * *') //Run at 12:15 PM every day
+    initializeScheduler() {
+        setInterval(() => {
+            this.scheduleDailyWeatherUpdates();
+        }, 20000); // 30 seconds interval (30000 milliseconds)
+    }
     async scheduleDailyWeatherUpdates() {
         try {
-            const apiData = await this.apiModel.findById("658c1ac43b9561d7d764dddb");
+            let UniqueId= process.env.API_MONGODB_OBJECT_ID;
+            const Apistring = await this.getApiString(UniqueId);
+         
             const users = await this.userModel.find();
             for (const user of users) {
                 if(user.isBlocked == false && user.isSubscribed == true) {
-                    fetchetails(user.location, user.tele_id, apiData.api , this.sendMessageToUser.bind(this)); // Send weather updates to each user
+                    fetchetails(user.location, user.tele_id, Apistring , this.sendMessageToUser.bind(this)); // Send weather updates to each user
                 }
             } 
         } catch (error) {
             this.logger.error(`Failed to send daily weather updates: ${error.message}`);
+            console.log('The user have not yet subscribed')
         }
     }
     async handleSubscription(chatId: string, defaultplace: string, username: string) {
             try {
                 const existingUser = await this.userModel.findOne({tele_id:chatId});
-                const default_place = defaultplace;
                 if (existingUser && existingUser.isBlocked == false) {
+                    console.log("true, city exists",defaultplace)
                     username = username,
-                    existingUser.location == default_place,
+                    existingUser.location = defaultplace,
                     existingUser.tele_id = chatId;
                     existingUser.isSubscribed = true;
                     await existingUser.save();
@@ -108,13 +113,13 @@ export class TelegramAssignmentAstService {
          
     }
     async checkCity(api: string, chatId: string, city:string, name:string){
+        console.log("found found found")
         let url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${api}`;
         const res= await fetch(url);
         const data= await res.json();
-        console.log(data);
         const message = await data.message;
         if(message != 'city not found') {
-            console.log(message,"HiHIHI", city)
+            console.log(message,"HiHIHI", chatId,city,name)
             this.handleSubscription(chatId,city,name)
             fetchetails(city, chatId, api, this.sendMessageToUser.bind(this)); // Pass sendMessageToUser function reference
         }
@@ -135,20 +140,47 @@ async removeUserSubscription(chatId: string) {
      
 }
 
+async createADocumentforApi(UniqueId:String){
+    try {
+        const existingDocument = await this.apiModel.findById(UniqueId);
+        if(!existingDocument) {
+            const newDocument = new this.apiModel({
+                _id : UniqueId,
+                api : process.env.API_OF_WEATHER
+            });
+            await newDocument.save();
+        }
+    } catch (error) {
+        console.log('Document already exists for API');
+    }
+}
+async getApiString(UniqueId: string): Promise<string | undefined> {
+    const apiData = await this.apiModel.findById(UniqueId);
+    if (!apiData) {
+        await this.createADocumentforApi(UniqueId);
+    }
+    const apiNewData = await this.apiModel.findById(UniqueId);
+    if (apiNewData) {
+        return apiNewData.api;
+    }
+    return undefined;
+}
+
 onRecieveMessage = async (msg: any) => {
-        const apiData = await this.apiModel.findById("658c1ac43b9561d7d764dddb");
+        const users = await this.userModel.find();
+        let UniqueId= process.env.API_MONGODB_OBJECT_ID;
+        const Apistring = await this.getApiString(UniqueId);
+
         const place = msg.text;
         if(place!='/start' && place!='/PlaceName' && place!='/Stop') {
             if(place.startsWith('/')){
                 const trim = msg.text.trim(); //Remove extra spaces
                 const cityName = trim.slice(1);
-                this.checkCity(apiData.api, msg.chat.id, cityName, msg.from.first_name );
+                this.checkCity(Apistring, msg.chat.id, cityName, msg.from.first_name );
             } else {
-                fetchetails(place, msg.chat.id, apiData.api, this.sendMessageToUser.bind(this)); // Pass sendMessageToUser function reference
+                fetchetails(place, msg.chat.id, Apistring, this.sendMessageToUser.bind(this)); // Pass sendMessageToUser function reference
             }
         } 
-        console.log(apiData.api)
-        console.log(place)
         if(place == '/start'){
             this.bot.sendMessage(msg.chat.id, "Welcome to the Bot, Please Write a place name ☀️"); // Pass sendMessageToUser function reference
         } 
@@ -160,10 +192,14 @@ onRecieveMessage = async (msg: any) => {
             `); // Pass sendMessageToUser function reference
         }
         else if(place == '/Unsubscribe' ||place == '/unsubscribe') {
-            this.removeUserSubscription(msg.chat.id);
-            console.log(msg.chat.id)
-            this.bot.sendMessage(msg.chat.id, "You have Sucessfully Unsubscribed"); // Pass sendMessageToUser function reference
-
+            if(users) {
+                this.removeUserSubscription(msg.chat.id);
+                // console.log(msg.chat.id)
+                this.bot.sendMessage(msg.chat.id, "You have Sucessfully Unsubscribed"); // Pass sendMessageToUser function reference
+            }
+            else {
+                console.log("Users Do not exists to Unsubscribe");
+            }
         }
     }
     sendMessageToUser = (userID: string, message: string) => {

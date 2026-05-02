@@ -6,6 +6,14 @@ import { clearToken } from "../utils/getToken";
 import { ToastService } from "../utils/toastService";
 import { useUserData } from "../redux/hooks/useUserData";
 import { useModalData } from "../redux/hooks/useModal";
+import {
+  PieChartIcon,
+  GroupIcon,
+  BoltIcon,
+  AccountSettings,
+  ChevronDownIcon,
+  HorizontaLDots,
+} from "../icons";
 
 type NavItem = {
   name: string;
@@ -18,22 +26,22 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     name: "Dashboard",
-    icon: <span>📊</span>,
+    icon: <PieChartIcon />,
     path: "/dashboard",
   },
   {
     name: "Subscribers",
-    icon: <span>👥</span>,
+    icon: <GroupIcon />,
     path: "/subscribers",
   },
   {
     name: "Weather Config",
-    icon: <span>🌦️</span>,
+    icon: <BoltIcon />,
     path: "/weather-config",
   },
   {
     name: "Settings",
-    icon: <span>⚙️</span>,
+    icon: <AccountSettings />,
     path: "/settings",
   },
 ];
@@ -53,12 +61,9 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ closeOnSelect = false }) => {
     type: "main" | "others";
     index: number;
   } | null>(null);
-  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
-    {}
-  );
+  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // const isActive = (path: string) => location.pathname === path;
   const isActive = useCallback(
     (path: string) => location.pathname.startsWith(path),
     [location.pathname]
@@ -177,16 +182,14 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ closeOnSelect = false }) => {
                   <span className="menu-item-text">{nav.name}</span>
                 )}
                 {(isExpanded || isMobileOpen) && (
-                  <span
+                  <ChevronDownIcon
                     className={`ml-auto w-5 h-5 transition-transform duration-200 ${
                       openSubmenu?.type === menuType &&
                       openSubmenu?.index === index
-                        ? "rotate-180 text-brand-500 inline-block"
+                        ? "rotate-180 text-brand-500"
                         : ""
                     }`}
-                  >
-                    v
-                  </span>
+                  />
                 )}
               </button>
             ) : nav.type === "function" ? (
@@ -291,7 +294,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ closeOnSelect = false }) => {
   };
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-black dark:border-gray-800 text-black h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white text-black h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
         ${isExpanded || isMobileOpen ? "w-[290px]" : "w-[90px]"}
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0`}
@@ -304,30 +307,16 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ closeOnSelect = false }) => {
         <Link to="/">
           {isExpanded || isMobileOpen ? (
             <div className="flex items-center space-x-2">
-              {/* <span className="text-black dark:text-gray-400"></span> */}
               <img
-                className="dark:hidden h-10"
+                className="h-10"
                 src="/images/logo/logo.svg"
-                alt="Logo"
-              />
-              <img
-                className="hidden dark:block h-10"
-                src="/images/logo/logo-dark.svg"
                 alt="Logo"
               />
             </div>
           ) : (
             <>
               <img
-                className="dark:hidden"
                 src="/images/logo/logo.svg"
-                alt="Logo"
-                width={32}
-                height={32}
-              />
-              <img
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
                 alt="Logo"
                 width={32}
                 height={32}
@@ -348,30 +337,13 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ closeOnSelect = false }) => {
                 {isExpanded || isMobileOpen ? (
                   ""
                 ) : (
-                  <span>...</span>
+                  <HorizontaLDots className="size-6" />
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>
-            {/* <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div> */}
           </div>
         </nav>
-        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
     </aside>
   );

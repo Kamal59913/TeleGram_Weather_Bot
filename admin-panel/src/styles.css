@@ -2,13 +2,15 @@
 
 html,
 body {
-  background-color: #ffffff;
+  background-color: #fafafa;
   color: #111827;
   color-scheme: light;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #fafafa;
 }

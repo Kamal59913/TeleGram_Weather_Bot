@@ -1,0 +1,29 @@
+<svg width="480" height="120" viewBox="0 0 480 120" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Weather Bot Logo</title>
+  <desc>Cloud with lightning bolt icon beside the text Weather Bot</desc>
+  <defs>
+    <style>
+      .brand-main { font-family: sans-serif; font-size: 32px; font-weight: 700; fill: #111c2e; }
+      .brand-accent { font-family: sans-serif; font-size: 32px; font-weight: 700; fill: #4a90d9; }
+    </style>
+  </defs>
+
+  <!-- Cloud -->
+  <ellipse cx="62" cy="48" rx="28" ry="20" fill="#4a90d9"/>
+  <ellipse cx="82" cy="36" rx="26" ry="22" fill="#4a90d9"/>
+  <ellipse cx="102" cy="44" rx="20" ry="17" fill="#4a90d9"/>
+  <ellipse cx="48" cy="50" rx="18" ry="15" fill="#4a90d9"/>
+  <ellipse cx="74" cy="26" rx="22" ry="19" fill="#4a90d9"/>
+  <ellipse cx="78" cy="25" rx="11" ry="9" fill="#6aaff0" opacity="0.35"/>
+
+  <!-- Rain drops -->
+  <rect x="56" y="60" width="4.5" height="13" rx="2.25" fill="#6aaff0" opacity="0.85" transform="rotate(-8,58,66)"/>
+  <rect x="70" y="63" width="4.5" height="11" rx="2.25" fill="#4a90d9" opacity="0.7" transform="rotate(-8,72,68)"/>
+  <rect x="84" y="61" width="4.5" height="13" rx="2.25" fill="#6aaff0" opacity="0.85" transform="rotate(-8,86,67)"/>
+
+  <!-- Lightning bolt -->
+  <polygon points="80,28 70,46 78,46 66,68 84,42 76,42" fill="#f5c842"/>
+
+  <!-- Text -->
+  <text x="140" y="62" class="brand-main">Weather <tspan class="brand-accent">Bot</tspan></text>
+</svg>

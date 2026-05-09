@@ -1,0 +1,145 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "../../ui/table";
+import { useModalData } from "../../../redux/hooks/useModal";
+import { ToastService } from "../../../utils/toastService";
+import { useNavigate } from "react-router-dom";
+import { ActionIcons } from "../../action/action";
+import { formatDate } from "../../../utils/formateDate";
+import Badge from "../../ui/badge/Badge";
+import { useGetClassSubjects } from "../../../hooks/queries/class-subject/useClassSubjects";
+import classSubjectService from "../../../api/services/classSubjectService";
+interface ClassTableProps {
+  title: string;
+}
+const ClassSubjectTable: React.FC<ClassTableProps> = () => {
+  const { data: localData, isPending } = useGetClassSubjects();
+
+  const { open, close } = useModalData();
+  const navigate = useNavigate();
+
+  const deleteClassSubject = async (_id: string) => {
+    const response = await classSubjectService.deleteClassSubjectById(_id)
+    if (response.success) {
+      ToastService.success(`${response.message || 'Class Subject Deleted Successfully'}`, 'delete-class-subject')
+      close()
+    } else {
+      ToastService.success(`${response.message || 'Failed Deleting Class Subject'}`, 'delete-class-subject-fail')
+    }
+  }
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+      <div className="max-w-full overflow-x-auto">
+        <Table>
+          <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+            <TableRow>
+              <TableCell
+                isHeader
+                className="pl-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                No.
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                Name
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                Code
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                Elective
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                Class
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                Created At
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium font-gray-dark text-start text-theme-th dark:text-gray-400"
+              >
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+            {
+              !isPending && !localData?.data?.length &&
+              <TableRow>
+                <td className="text-center px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400" colSpan={6}>
+                  No Data
+                </td>
+              </TableRow>
+            }
+            {localData?.data?.map((data: any, index: number) => (
+              <TableRow key={index}>
+                <TableCell className="pl-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {index + 1}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {data.subjectName || 'NA'}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {data.subjectCode || 'NA'}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  <Badge
+                    size="sm"
+                    color={
+                      data.isElective === true
+                        ? "success" : "error"
+                    }
+                  >
+                    {data.isElective ? 'Yes' : 'No'}
+                  </Badge>
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {data?.className || 'NA'}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {formatDate(data.createdAt, { format: 'date' }) || 'NA'}
+                </TableCell>
+
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  <ActionIcons onEdit={() => navigate(`edit-class-subject/${data.id}`)} onDelete={() => {
+                    open('delete-action', {
+                      title: 'Are you sure want to delete this Class Subject?',
+                      action: () => {
+                        deleteClassSubject(data?.id)
+                      }
+                    })
+                  }}
+                    title="Section" />
+                </TableCell>
+              </TableRow>
+            )
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+};
+
+export default ClassSubjectTable;

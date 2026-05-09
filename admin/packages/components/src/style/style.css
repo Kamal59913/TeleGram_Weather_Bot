@@ -1,0 +1,108 @@
+:root {
+  --white: #fff;
+  --black: #282828;
+  /* --text-gray-500: #282828; */
+  --border-color: #ccc;
+  --bg-gray: #f2f4f7;
+  --primary: #3f87d9;
+  --color-red-500: #c61313;
+  --color-success-600: #0ba159;
+  --color-green-500: #0ba159;
+}
+.black-text {
+  color: var(--black);
+}
+.dark .dark\:text-white\/90 {
+  color: var(--white);
+}
+.text-red-500,
+.text-error-600 {
+  color: var(--color-red-500);
+}
+.bg-black {
+  background: var(--black);
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--primary) 0%, #75a4da 100%);
+}
+.btn-black,
+.btn-primary:hover {
+  background: linear-gradient(180deg, var(--black) 0%, #535252 100%);
+}
+.btn-black:hover {
+  background: linear-gradient(180deg, var(--primary) 0%, #75a4da 100%);
+}
+input,
+.cstm-select {
+  border: 1px solid var(--border-color) !important;
+  outline: none !important;
+  border-radius: 4px;
+  box-shadow: none;
+  outline: none;
+}
+.border-error-500 {
+  border: 1px solid var(--color-red-500) !important;
+}
+.cstm-module-header {
+  background: var(--white);
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.toggle-sidebar {
+  border: 0;
+  width: auto;
+}
+.toggle-sidebar svg {
+  width: 22px;
+  height: 22px;
+}
+.cstm-search {
+  background: transparent;
+  box-shadow: none;
+}
+.view-svg:hover path {
+  fill: #5f5f5f;
+}
+.cstm-module-header input {
+  border-radius: 40px;
+}
+.close-icon {
+  top: 5px;
+  right: 5px;
+  background: transparent;
+}
+.cstm-setting-column button {
+  border-radius: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.cstm-setting-column button:hover {
+  background: var(--bg-gray);
+  color: var(--black);
+}
+table th:last-child {
+  width: 155px;
+}
+table.section-table-inner th:last-child {
+  width: auto;
+}
+input[type="radio"] {
+  border-radius: 100px;
+}
+table .text-sm-v2 {
+  font-size: 16px;
+}
+
+/* Flatpickr Disabled Dates Styling */
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+  color: rgba(0, 0, 0, 0.25) !important;
+  cursor: not-allowed !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.dark .flatpickr-day.flatpickr-disabled,
+.dark .flatpickr-day.flatpickr-disabled:hover {
+  color: rgba(255, 255, 255, 0.2) !important;
+}

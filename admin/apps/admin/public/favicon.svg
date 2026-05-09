@@ -1,0 +1,13 @@
+<svg width="32" height="32" viewBox="0 0 32 32" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Weather Bot Admin Favicon</title>
+  <rect x="0" y="0" width="32" height="32" rx="6" fill="#111c2e"/>
+  <ellipse cx="12" cy="20" rx="7" ry="5.5" fill="#4a90d9"/>
+  <ellipse cx="17" cy="17" rx="6.5" ry="5.5" fill="#4a90d9"/>
+  <ellipse cx="22" cy="19.5" rx="5" ry="4.5" fill="#4a90d9"/>
+  <ellipse cx="9" cy="21" rx="4.5" ry="4" fill="#4a90d9"/>
+  <ellipse cx="16" cy="14" rx="6" ry="5" fill="#4a90d9"/>
+  <rect x="11" y="23" width="2" height="5" rx="1" fill="#6aaff0" opacity="0.85" transform="rotate(-6,12,25)"/>
+  <rect x="15" y="24" width="2" height="4.5" rx="1" fill="#4a90d9" opacity="0.7" transform="rotate(-6,16,26)"/>
+  <rect x="19" y="23" width="2" height="5" rx="1" fill="#6aaff0" opacity="0.85" transform="rotate(-6,20,25)"/>
+  <polygon points="17,14 13,20 16,20 12,28 19,21 16,21" fill="#f5c842"/>
+</svg>

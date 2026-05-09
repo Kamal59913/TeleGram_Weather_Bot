@@ -4,6 +4,7 @@ import {
   Column,
 } from "@shared/common/components/data-table/DataTable.tsx";
 import apiClient from "@/api/clients/apiClient";
+import Button from "@shared/common/components/ui/button/Button.tsx";
 
 type Subscriber = {
   tele_id: string;
@@ -125,16 +126,14 @@ const SubscribersTable: React.FC<SubscribersTableProps> = ({
       header: "Action",
       disableRowClick: true,
       accessor: (item) => (
-        <button
+        <Button
+          variant={item.isBlocked ? "outline" : "red"}
+          size="sm"
           onClick={() => handleToggleBlock(item.tele_id)}
-          className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
-            item.isBlocked
-              ? "border-green-300 text-green-700 hover:bg-green-50 dark:border-green-700 dark:text-green-400 dark:hover:bg-green-500/10"
-              : "border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-500/10"
-          }`}
+          borderRadius="rounded-lg"
         >
           {item.isBlocked ? "Unblock" : "Block"}
-        </button>
+        </Button>
       ),
     },
   ];

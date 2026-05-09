@@ -38,7 +38,7 @@ const Button: React.FC<ButtonProps> = ({
     primary: `${
       disabled || loadingState
         ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-        : "bg-[#4a90d9] hover:bg-[#1a1a1a] text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black"
+        : "bg-[#4a90d9] hover:bg-[#3a73b0] text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black"
     }`,
     light: `bg-[#7d2f79] hover:bg-[#4a90d9] text-white dark:bg-gray-200 dark:hover:bg-white dark:text-black ${
       disabled || loadingState ? "opacity-50" : ""

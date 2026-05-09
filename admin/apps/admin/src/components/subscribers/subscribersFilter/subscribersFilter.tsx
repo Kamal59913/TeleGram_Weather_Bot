@@ -1,3 +1,5 @@
+import Button from "@shared/common/components/ui/button/Button.tsx";
+
 interface SubscribersFilterProps {
   filters: {
     search: string;
@@ -19,16 +21,17 @@ const SubscribersFilter: React.FC<SubscribersFilterProps> = ({
           placeholder="Search by username, city, telegram id..."
           value={filters.search}
           onChange={(e) => onFilterChange({ search: e.target.value })}
-          className="h-10 w-full rounded-lg border border-gray-200 bg-transparent px-3 text-sm text-gray-800 placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+          className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors bg-white text-black border-gray-300 placeholder-gray-400 focus:border-[#000000] focus:ring-[#000000]/20 dark:bg-black dark:text-white dark:border-gray-800 dark:placeholder-gray-600 dark:focus:border-zinc-700 dark:focus:ring-zinc-700/20"
         />
       </div>
       {filters.search && (
-        <button
+        <Button
+          variant="outline"
+          size="sm"
           onClick={onClearFilters}
-          className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]"
         >
           Clear
-        </button>
+        </Button>
       )}
     </div>
   );

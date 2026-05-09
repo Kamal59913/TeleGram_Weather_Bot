@@ -2,7 +2,7 @@ import ComponentCard from "../../../components/common/ComponentCard";
 import Label from "@shared/common/components/ui/form/Label.tsx";
 import { useGlobalStates } from "../../../redux/hooks/useGlobalStates";
 import Input from "@shared/common/components/ui/form/input/InputField.tsx";
-import Button from "../../../components/ui/button/Button";
+import Button from "@shared/common/components/ui/button/Button.tsx";
 import { ToastService } from "../../../utils/toastService";
 import profileService from "../../../api/services/profileService";
 import { useProfileForm } from "./hook/useProfile.form.hook";

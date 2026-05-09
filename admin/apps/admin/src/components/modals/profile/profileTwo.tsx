@@ -1,5 +1,5 @@
 // In your component file
-import Button from '../../ui/button/Button';
+import Button from '@shared/common/components/ui/button/Button.tsx';
 import { Modal } from '../../ui/modal';
 import { useModalData } from '../../../redux/hooks/useModal';
 // import editProfileValidation from '../../../validators/editProfile.validator';

@@ -4,7 +4,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   children: ReactNode;
   size?: "sm" | "md";
-  variant?: "primary" | "outline" | "dark" | "red";
+  variant?: "primary" | "outline" | "dark" | "red" | "light";
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -33,9 +33,13 @@ const Button = ({
     md: "px-4 py-3",
   };
 
-  // Variant Classes
   const variantClasses = {
-    primary: `bg-[#4a90d9] hover:bg-[#1a1a1a] text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black ${
+    primary: `${
+      disabled || loadingState
+        ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+        : "bg-[#4a90d9] hover:bg-[#3a73b0] text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black"
+    }`,
+    light: `bg-[#7d2f79] hover:bg-[#000000] text-white dark:bg-gray-200 dark:hover:bg-white dark:text-black ${
       disabled || loadingState ? "opacity-50" : ""
     }`,
     outline:
@@ -55,10 +59,10 @@ const Button = ({
   };
   return (
     <button
-      className={`cursor-pointer font-medium transition-colors ${borderRadius} ${className} ${
+      className={`font-medium transition-colors ${borderRadius} ${className} ${
         sizeClasses[size]
       } ${variantClasses[variant]} ${
-        disabled ? "cursor-not-allowed opacity-50" : ""
+        disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
       }`}
       onClick={handleClick}
       disabled={disabled || loadingState} // Block clicks when loading

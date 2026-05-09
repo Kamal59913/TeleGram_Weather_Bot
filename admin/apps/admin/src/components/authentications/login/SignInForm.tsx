@@ -20,12 +20,12 @@ export default function SignInForm() {
     if (response.status === 201) {
       ToastService.success(
         response.data.message || "Sign in success",
-        "sign-in-success"
+        "sign-in-success",
       );
     } else {
       ToastService.error(
         response.data.message || "Sign in failed",
-        "sign-in-fail"
+        "sign-in-fail",
       );
     }
   };
@@ -65,13 +65,13 @@ export default function SignInForm() {
                   <Label>
                     Password <span className="text-error-500">*</span>{" "}
                   </Label>
-                    <PasswordInput
-                      register={formMethods?.register}
-                      registerOptions="password"
-                      errors={formMethods.formState.errors}
-                      placeholder="Enter your password"
-                      maxLength={65}
-                    />
+                  <PasswordInput
+                    register={formMethods?.register}
+                    registerOptions="password"
+                    errors={formMethods.formState.errors}
+                    placeholder="Enter your password"
+                    maxLength={65}
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <Link
